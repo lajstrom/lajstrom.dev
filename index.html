@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/style.css">
+<title>Lajstrom</title>
+<meta name="description" content="Artifact registry on top of any OCI registry. One server, many repository formats, stored in the registry you already run.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Lajstrom">
+<meta property="og:description" content="Artifact registry on top of any OCI registry. One server, many repository formats, stored in the registry you already run.">
+<meta property="og:url" content="https://lajstrom.dev/">
+</head>
+<body>
+<header class="hero"><div class="wrap">
+<h1>Lajstrom</h1>
+<p class="tag">Artifact registry on top of any OCI registry.</p>
+<span class="badge">design phase</span>
+<p class="lead">One server, many repository formats: apt, rpm, maven, pypi, npm, terraform modules, raw files. Every artifact is stored as an OCI artifact in the registry you already run: ECR, Harbor, Zot, GHCR, docker distribution. Lajstrom owns no bytes, only the index, and the index can always be rebuilt from the registry.</p>
+<div class="btns"><a class="btn primary" href="https://github.com/lajstrom/lajstrom">GitHub</a><a class="btn" href="#how-it-works">How it works</a></div>
+</div></header>
+<main>
+<section id="how-it-works"><div class="wrap">
+<h2>How it works</h2>
+<ol class="principles">
+<li><strong>The OCI registry is the only storage and the source of truth.</strong> Lajstrom never stores artifact bytes itself.</li>
+<li><strong>The database is a derived, rebuildable index</strong> plus a small control plane (repos, users, tokens, permissions).</li>
+<li><strong>Clients keep their native tools.</strong> apt, dnf, mvn, pip, npm, terraform talk to Lajstrom as if it were their native repository. Protocol emulation is server-side; no client plugins.</li>
+<li><strong>Docker images pass through</strong> to the backend registry untouched, with Lajstrom's RBAC and audit in front.</li>
+</ol>
+</div></section>
+<section id="formats"><div class="wrap">
+<h2>Formats</h2>
+<ul class="formats">
+<li>apt <span>planned</span></li>
+<li>rpm <span>planned</span></li>
+<li>maven <span>planned</span></li>
+<li>pypi <span>planned</span></li>
+<li>npm <span>planned</span></li>
+<li>terraform modules <span>planned</span></li>
+<li>raw files <span>planned</span></li>
+</ul>
+</div></section>
+<section id="install"><div class="wrap">
+<h2>Install</h2>
+<pre><code>go install github.com/lajstrom/lajstrom@latest</code></pre>
+<p class="note">Lajstrom is in the design phase and there is nothing to run yet. Today this command only prints a placeholder message. Placeholder packages are also reserved on PyPI, npm and crates.io under the name <code>lajstrom</code>.</p>
+</div></section>
+</main>
+<footer><div class="wrap">
+Licensed under <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a> &middot; <a href="https://github.com/lajstrom/lajstrom">GitHub</a> &middot; <a href="https://github.com/lajstrom">lajstrom on GitHub</a>
+</div></footer>
+</body>
+</html>
