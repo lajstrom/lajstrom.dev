@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/style.css">
 <title>Lajstrom</title>
-<meta name="description" content="Artifact registry on top of any OCI registry. One server, many repository formats, stored in the registry you already run.">
+<meta name="description" content="Artifact registry on top of any OCI registry. One server for apt, rpm, maven, pypi, npm, raw files and OCI artifacts, stored in the registry you already run.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Lajstrom">
-<meta property="og:description" content="Artifact registry on top of any OCI registry. One server, many repository formats, stored in the registry you already run.">
+<meta property="og:description" content="Artifact registry on top of any OCI registry. One server for apt, rpm, maven, pypi, npm, raw files and OCI artifacts, stored in the registry you already run.">
 <meta property="og:url" content="https://lajstrom.dev/">
 </head>
 <body>
@@ -14,9 +14,9 @@
 <picture class="mark"><source srcset="/assets/logo-dark.svg" media="(prefers-color-scheme: dark)"><img src="/assets/logo.svg" alt="" width="56" height="56"></picture>
 <h1>Lajstrom</h1>
 <p class="tag">Artifact registry on top of any OCI registry.</p>
-<span class="badge">design phase</span>
-<p class="lead">One server, many repository formats: apt, rpm, maven, pypi, npm, terraform modules, raw files. Every artifact is stored as an OCI artifact in the registry you already run: ECR, Harbor, Zot, GHCR, docker distribution. Lajstrom owns no bytes, only the index, and the index can always be rebuilt from the registry.</p>
-<div class="btns"><a class="btn primary" href="https://github.com/lajstrom/lajstrom">GitHub</a><a class="btn" href="#how-it-works">How it works</a></div>
+<span class="badge">pre-release &middot; v0.1.0 due 2026-12-04</span>
+<p class="lead">One server, many repository formats: apt, rpm, maven, pypi, npm and raw files, and any OCI artifact through the <code>/v2</code> API. Every artifact is stored as an OCI artifact in the registry you already run: ECR, Harbor, Zot, GHCR, docker distribution. Lajstrom owns no bytes, only the index, and the index can always be rebuilt from the registry.</p>
+<div class="btns"><a class="btn primary" href="https://github.com/lajstrom/lajstrom">GitHub</a><a class="btn" href="#install">Install</a><a class="btn" href="#how-it-works">How it works</a></div>
 </div></header>
 <main>
 <section id="how-it-works"><div class="wrap">
@@ -24,26 +24,33 @@
 <ol class="principles">
 <li><strong>The OCI registry is the only storage and the source of truth.</strong> Lajstrom never stores artifact bytes itself.</li>
 <li><strong>The database is a derived, rebuildable index</strong> plus a small control plane (repos, users, tokens, permissions).</li>
-<li><strong>Clients keep their native tools.</strong> apt, dnf, mvn, pip, npm, terraform talk to Lajstrom as if it were their native repository. Protocol emulation is server-side; no client plugins.</li>
+<li><strong>Clients keep their native tools.</strong> pip, apt-get, dnf, mvn, npm and oras talk to Lajstrom as if it were their native repository. Protocol emulation is server-side; no client plugins.</li>
 <li><strong>Docker images pass through</strong> to the backend registry untouched, with Lajstrom's RBAC and audit in front.</li>
 </ol>
 </div></section>
 <section id="formats"><div class="wrap">
 <h2>Formats</h2>
+<p class="note">Each format on main is run by its quick start and by an end-to-end test with the real clients. <a href="https://github.com/lajstrom/lajstrom#what-works">What each one does</a>.</p>
 <ul class="formats">
-<li>apt <span>planned</span></li>
-<li>rpm <span>planned</span></li>
-<li>maven <span>planned</span></li>
-<li>pypi <span>planned</span></li>
-<li>npm <span>planned</span></li>
-<li>terraform modules <span>planned</span></li>
-<li>raw files <span>planned</span></li>
+<li><a href="https://github.com/lajstrom/lajstrom/blob/main/docs/quickstart/raw.md">raw files</a> <span>on main</span></li>
+<li><a href="https://github.com/lajstrom/lajstrom/blob/main/docs/quickstart/pypi.md">pypi</a> <span>on main</span></li>
+<li><a href="https://github.com/lajstrom/lajstrom/blob/main/docs/quickstart/apt.md">apt</a> <span>on main</span></li>
+<li><a href="https://github.com/lajstrom/lajstrom/blob/main/docs/quickstart/maven.md">maven</a> <span>on main</span></li>
+<li><a href="https://github.com/lajstrom/lajstrom/blob/main/docs/quickstart/npm.md">npm</a> <span>on main</span></li>
+<li><a href="https://github.com/lajstrom/lajstrom/blob/main/docs/quickstart/rpm.md">rpm</a> <span>on main</span></li>
+<li><a href="https://github.com/lajstrom/lajstrom/blob/main/docs/quickstart/oras.md">OCI artifacts</a> <span>on main</span></li>
+<li><a href="https://github.com/lajstrom/lajstrom/blob/main/docs/quickstart/docker.md">docker images</a> <span>on main</span></li>
+<li>terraform modules <span>after v0.1.0</span></li>
 </ul>
 </div></section>
 <section id="install"><div class="wrap">
 <h2>Install</h2>
-<pre><code>go install github.com/lajstrom/lajstrom@latest</code></pre>
-<p class="note">Lajstrom is in the design phase and there is nothing to run yet. Today this command only prints a placeholder message. Placeholder packages are also reserved on PyPI, npm and crates.io under the name <code>lajstrom</code>.</p>
+<p>No release is out yet. Until v0.1.0 (due 2026-12-04), build from source with Go 1.27:</p>
+<pre><code>git clone https://github.com/lajstrom/lajstrom.git &amp;&amp; cd lajstrom
+make build &amp;&amp; bin/lajstrom version</code></pre>
+<p>From v0.1.0 on, the image, signed with cosign:</p>
+<pre><code>docker run --rm ghcr.io/lajstrom/lajstrom:v0.1.0 version</code></pre>
+<p class="note">The archives with checksums and signatures, Homebrew, Docker Compose, Kubernetes and Helm are in <a href="https://github.com/lajstrom/lajstrom/blob/main/docs/install.md">docs/install.md</a>. Bugs and feature requests go to <a href="https://github.com/lajstrom/lajstrom/issues">GitHub Issues</a>; to contribute, read <a href="https://github.com/lajstrom/lajstrom/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a>.</p>
 </div></section>
 </main>
 <footer><div class="wrap">
